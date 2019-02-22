@@ -5,11 +5,11 @@ $(document).ready(function(){
             url: "/api/articles"
         }).then(function(result){
             $("#cardBody").empty();
-            for(var i=0;i<result.length;i++){
+            for(let i=0;i<result.length;i++){
                 //console.log(result[i]);
-                var newCard=$("<div>").addClass("card");
-                var newHeader=$("<div>").addClass("card-header");
-                var newBody=$("<div>").addClass("card-body");
+                let newCard=$("<div>").addClass("card");
+                let newHeader=$("<div>").addClass("card-header");
+                let newBody=$("<div>").addClass("card-body");
 
                 newHeader.append("<p><strong>"+result[i].headline+"</strong></p>");
                 newBody.append("<p>"+result[i].summary+"</p>");
@@ -20,6 +20,23 @@ $(document).ready(function(){
                 $("#cardBody").append(newCard);
                 $("#cardBody").append("<br>");
             }
+        });
+    });
+
+    $('body').on("click",".favBtn",function(){
+        let articleID=$(this).attr('data-artId');
+        $.ajax({
+            method: "PUT",
+            url : "/api/favorites/"+articleID
+        }).then(function(result){
+            $("#confirmBody").empty();
+            if(result===false){
+                $("#confirmBody").append("<p>This article has been saved to your favorites!");
+            }
+            else{
+                $("#confirmBody").append("<p>Unable to add to favorites. You might already have it saved.");
+            }
+            $("#confirmModal").modal('show');
         });
     });
 });

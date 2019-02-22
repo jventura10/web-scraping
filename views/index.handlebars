@@ -9,6 +9,9 @@
       <a class="nav-item nav-link" href="/favorites">Favorites</a>
       <a class="nav-item nav-link" href="/login">Log In</a>
       <a class="nav-item nav-link" href="/signup">Sign Up</a>
+      {{#if user}}
+      <a class="nav-item nav-link" href="/logout">Logout</a>
+      {{/if}}
     </div>
   </div>
 </nav>
@@ -22,10 +25,30 @@
 
 <div class="card">
   <div class="card-header">
-    <p><strong><i class="fa fa-newspaper-o"></i> Articles</strong></p>
+    <h4><strong><i class="fa fa-newspaper-o"></i> Articles</strong></h4>
   </div>
   <div class="card-body" id="cardBody">
-    <p>Uh oh. No Articles Found. Please Add Some Above.</p>
+    <p>Add Some Articles Above.</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Article Added</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="confirmBody">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
   </div>
 </div>
 
