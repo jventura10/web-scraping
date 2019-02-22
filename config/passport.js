@@ -5,13 +5,13 @@ var db = require("../models");
 module.exports = function (passport) {
     passport.serializeUser(function(user, done) {
         done(null, user);
-      });
+    });
        
-      passport.deserializeUser(function(id, done) {
+    passport.deserializeUser(function(id, done) {
         db.User.findById(id, function(err, user) {
           done(err, user);
         });
-      });
+    });
 
     passport.use('local-signup', new localStrategy({
         usernameField: 'username',

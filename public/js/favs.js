@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var noteID;
     function getFavorites() {
         $.ajax({
             method: "GET",
@@ -15,7 +16,18 @@ $(document).ready(function () {
                     newHeader.append("<p><strong>" + result[i].headline + "</strong></p>");
                     newBody.append("<p>" + result[i].summary + "</p>");
                     newBody.append("<small>Original Link: <a href='" + result[i].link + "'>Go There Now!</a></small><br><br>");
-                    newBody.append("<button class='btn btn-outline-danger removeFavBtn' data-artID='" + result[i]._id + "'>Remove From Favorites</button>");
+                    newBody.append("<p>Notes about the Article: ");
+                    newBody.append("<hr class='my-4'>");
+                    if(result[i].notes.length>0){
+                        for(let j=0;j<result[i].notes.length;j++){
+                            newBody.append("<p>"+result[i].notes[j]+"</p>");
+                        }
+                    }
+                    else{
+                        newBody.append("<p>Be the first to add a note on this article!</p>");
+                    }
+                    newBody.append("<button class='btn btn-outline-danger removeFavBtn' data-artID='" + result[i]._id+"'>Remove From Favorites</button>");
+                    newBody.append("<button class='btn btn-outline-success noteFavBtn' data-artID='"+result[i]._id+"'>Add A Note</button>");
                     newCard.append(newHeader);
                     newCard.append(newBody);
                     $("#favSpace").append(newCard);
@@ -37,15 +49,25 @@ $(document).ready(function () {
             method: "DELETE",
             url: "/api/favorites/" + articleID
         }).then(function (result) {
-            $("#deleteBody").empty();
-            if (result === true) {
-                $("#deleteBody").append("<p>This article has been deleted from to your favorites!");
-            }
-            else {
-                $("#deleteBody").append("<p>Unable to delete from favorites.Try again later.");
-            }
-            $("#deleteModal").modal('show');
+            location.reload();
+        });
+    });
 
+    $('body').on("click",'.noteFavBtn',function(){
+        noteID=$(this).attr("data-artID");
+
+        $("#notesModal").modal('show');
+
+    });
+
+    $("#noteSubmitBtn").on('click',function(){
+        let newNote={
+            newComment: $("#noteInput").val().trim()
+        };
+
+        $.post("/api/notes/"+noteID,newNote).then(function(result){
+            $("#noteInput").val("");
+            location.reload();
         });
     });
 });

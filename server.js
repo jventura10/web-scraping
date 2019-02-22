@@ -162,6 +162,7 @@ app.get("/api/articles", function (req, res) {
 
 });
 
+//GET ALL FAVORITES
 app.get("/api/favorites", function (req, res) {
   db.Article.find({
     "_id" : {"$in" : req.session.passport.user.favorites}
@@ -192,7 +193,8 @@ app.put("/api/favorites/:id",function(req,res){
       res.send(true);
     }
     else{
-      db.User.update(
+      req.session.passport.user.favorites.push(req.params.id);
+      db.User.updateOne(
         { _id: req.session.passport.user._id},
         { $push: { favorites: req.params.id } }
       ).then(function(err,result){
@@ -206,9 +208,31 @@ app.put("/api/favorites/:id",function(req,res){
   }
 });
 
+//UPDATE A NEW NOTE 
+app.post("/api/notes/:id",function(req,res){
+  if(req.isAuthenticated()){
+    db.Article.updateOne(
+      { _id: req.params.id},
+      { $push: { notes: req.body.newComment } }
+    ).then(function(dbResult){
+      if(dbResult.nModified===1){
+        res.status(200);
+      }
+    });
+  } 
+  else{
+    res.redirect("/");
+  }
+});
+
 //DELETE ARTICLE FROM FAVORITES ARRAY
 app.delete("/api/favorites/:id",function(req,res){
   if(req.isAuthenticated()){
+    let indexID=req.session.passport.user.favorites.indexOf(req.params.id);
+    console.log("INDEX OF DELETED ARTICLE: "+indexID);
+    if(indexID>=0){
+      req.session.passport.user.favorites.splice(indexID,1);
+    }
     db.User.updateOne(
       { _id: req.session.passport.user._id },
       { $pull: { 'favorites': req.params.id} }

@@ -36,7 +36,8 @@ var ArticleSchema = new Schema({
         },
         "Link should be longer."
       ]
-    }
+    },
+    notes: []
   });
   
   // This creates our model from the above schema, using mongoose's model method
