@@ -5,10 +5,12 @@
 
 Technologies used: 
 
-- Bootstrap for styling 
+- Bootstrap for Styling 
+- Express-Handlebars for Templating 
 - Javascript and jQuery for front-end logic, ajax calls, and accessing page elements
 - NodeJS and ExpressJS for setting up server and routing
 - PassportJS to help with authentication
+- Axios and Cheerio to Scrape
 - MongoDB/Mongoose to store users and articles
 
 Deployed at: https://protected-temple-58411.herokuapp.com/
